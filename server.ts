@@ -16,7 +16,8 @@ dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const PORT = process.env.PORT || 3000;
+// Use Render's default port (10000) as fallback
+const PORT = process.env.PORT || 10000;
 const UPLOAD_DIR = path.join(__dirname, 'uploads');
 
 // Ensure upload directory exists
@@ -105,8 +106,8 @@ app.post('/api/upload', upload.single('file'), (req: Request, res: Response) => 
   }
 });
 
-// File download endpoint
-app.get('/api/download/:fileId', (req: Request, res: Response) => {
+// File download endpoint - explicitly define parameter as string
+app.get('/api/download/:fileId', (req: Request<{fileId: string}>, res: Response) => {
   try {
     const { fileId } = req.params;
     
@@ -195,7 +196,12 @@ io.on('connection', (socket) => {
 
 // Catch-all handler to serve React app in production
 if (process.env.NODE_ENV === 'production') {
-  app.get('*', (req: Request, res: Response) => {
+  app.get('/', (req: Request, res: Response) => {
+    res.sendFile(path.join(__dirname, '../dist/index.html'));
+  });
+  
+  // Use a more specific path for the catch-all to avoid path-to-regexp issues
+  app.get('/:path(*)', (req: Request, res: Response) => {
     res.sendFile(path.join(__dirname, '../dist/index.html'));
   });
 }
@@ -203,6 +209,7 @@ if (process.env.NODE_ENV === 'production') {
 // Start the server
 server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
+  console.log(`Server is listening on all interfaces (0.0.0.0:${PORT})`);
 });
 
 export default server; 
