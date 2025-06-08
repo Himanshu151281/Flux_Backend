@@ -200,9 +200,14 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.join(__dirname, '../dist/index.html'));
   });
   
-  // Use a more specific path for the catch-all to avoid path-to-regexp issues
-  app.get('/:path(*)', (req: Request, res: Response) => {
-    res.sendFile(path.join(__dirname, '../dist/index.html'));
+  // Simple catch-all route without special pattern
+  app.get('*', (req: Request, res: Response) => {
+    // Only handle GET requests for frontend routes, not API routes
+    if (req.method === 'GET' && !req.path.startsWith('/api/')) {
+      res.sendFile(path.join(__dirname, '../dist/index.html'));
+    } else {
+      res.status(404).json({ error: 'Not found' });
+    }
   });
 }
 
