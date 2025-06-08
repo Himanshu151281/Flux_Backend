@@ -4,11 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "server": "ts-node --esm server.ts",
-    "server:dev": "nodemon --exec ts-node --esm server.ts",
+    "server": "node --loader ts-node/esm server.ts",
+    "server:dev": "nodemon --exec node --loader ts-node/esm server.ts",
     "build:server": "tsc -p tsconfig.json",
     "start": "node dist/server.js",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "deploy": "npm run build:server && npm run start"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
