@@ -4,12 +4,13 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "server": "node server.js",
-    "server:dev": "nodemon server.js",
-    "build:server": "mkdir -p dist && cp server.js dist/",
-    "start": "node server.js",
+    "server": "node minimal-server.js",
+    "server:dev": "nodemon minimal-server.js",
+    "build:server": "mkdir -p dist && cp minimal-server.js dist/server.js",
+    "start": "node minimal-server.js",
     "lint": "eslint .",
-    "deploy": "node server.js"
+    "deploy": "node minimal-server.js",
+    "diagnose": "node -e \"console.log('Express version:', require('express/package.json').version); console.log('Path-to-regexp version:', require('path-to-regexp/package.json').version)\""
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
