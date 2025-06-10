@@ -32,8 +32,8 @@ npm install
 
 3. Create a `.env` file in the root directory with:
 ```
-VITE_API_URL=http://localhost:3000
-VITE_SOCKET_URL=http://localhost:3000
+VITE_API_URL=http://localhost:10000
+VITE_SOCKET_URL=http://localhost:10000
 ```
 
 ### Running the Application
